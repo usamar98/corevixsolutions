@@ -96,11 +96,7 @@ const process = [
 function CorevixLogo() {
   return (
     <span className="logo" aria-hidden="true">
-      <svg viewBox="0 0 64 64" role="img">
-        <path d="M32 5 55 18.5v27L32 59 9 45.5v-27L32 5Z" />
-        <path d="M42.5 21.5 29.8 44 20.5 33.2" />
-        <path d="M32 5v13.5M55 18.5 42.5 25M9 18.5 21.5 25M32 59V45.5" />
-      </svg>
+      <img src="/corevix-logo.png" alt="" />
     </span>
   );
 }

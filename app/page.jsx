@@ -20,6 +20,7 @@ import {
 
 const navItems = [
   ["Services", "#services"],
+  ["Projects", "#projects"],
   ["Growth", "#growth"],
   ["Process", "#process"],
   ["Contact", "#contact"],
@@ -93,6 +94,158 @@ const process = [
   },
 ];
 
+const projectCatalog = [
+  {
+    category: "Healthcare and dental websites",
+    projects: [
+      {
+        title: "Macarthur Podiatry Group",
+        image: "/projects/podiatrists-au.png",
+        url: "https://podiatrists-au.vercel.app/",
+        text: "A podiatry clinic website for foot and ankle care, built around fast booking, treatment education, and patient trust.",
+        specs: ["Podiatry service architecture", "Booking and call CTAs", "Treatment education sections"],
+      },
+      {
+        title: "Bula Dental Care",
+        image: "/projects/bula-dental.png",
+        url: "https://bula-dental.vercel.app/",
+        text: "A family dental clinic website for Suva, Fiji with friendly service explanations and direct clinic contact routes.",
+        specs: ["Local dental SEO structure", "WhatsApp and call actions", "Patient information blocks"],
+      },
+      {
+        title: "SmileCraft Dental Fiji",
+        image: "/projects/dentists-app.png",
+        url: "https://dentists-app.vercel.app/",
+        text: "A Fiji dental clinic demo focused on family dental care, emergency enquiries, maps, calling, and WhatsApp conversion.",
+        specs: ["Hero-led clinic positioning", "Emergency enquiry flow", "Maps and contact prompts"],
+      },
+      {
+        title: "International Dental Clinic Demo",
+        image: "/projects/dentist-app-nine.png",
+        url: "https://dentist-app-nine.vercel.app/",
+        text: "A clean clinic template that can be adapted to different markets with service pages, doctor content, and location details.",
+        specs: ["Configurable clinic story", "Doctor profile space", "Opening hours and directions"],
+      },
+    ],
+  },
+  {
+    category: "Care and NDIS support platforms",
+    projects: [
+      {
+        title: "Your Care Support",
+        image: "/projects/ndis-app-three.png",
+        url: "https://ndis-app-three.vercel.app/",
+        text: "An Australian NDIS provider website with service clarity, trust-building copy, and consultation paths for participants.",
+        specs: ["NDIS service catalogue", "Support journey CTAs", "Accessible care messaging"],
+      },
+      {
+        title: "Your NDIS Provider",
+        image: "/projects/ndis-ecru.png",
+        url: "https://ndis-ecru.vercel.app/",
+        text: "A support provider template with participant-focused services, booking prompts, and a dashboard-style hero preview.",
+        specs: ["Support snapshot interface", "Consultation booking flow", "Participant goal framing"],
+      },
+      {
+        title: "EverKind Home Care",
+        image: "/projects/ever-kind.png",
+        url: "https://ever-kind-fnkf.vercel.app/",
+        text: "A private home care website for families comparing senior care, companionship, dementia support, and live-in care.",
+        specs: ["Family-first care copy", "Care service segmentation", "Arrange-care conversion path"],
+      },
+    ],
+  },
+  {
+    category: "Property, repair, and home services",
+    projects: [
+      {
+        title: "NorthStar Property Maintenance",
+        image: "/projects/northstar-rho-beryl.png",
+        url: "https://northstar-rho-beryl.vercel.app/",
+        text: "A Manchester property maintenance website for landlords who need urgent repair enquiries and visible job proof.",
+        specs: ["Landlord repair funnel", "Photo-led service proof", "Phone and request CTAs"],
+      },
+      {
+        title: "Hister Property Maintenance",
+        image: "/projects/hister.png",
+        url: "https://hister.vercel.app/",
+        text: "A bold repair website for landlords, HMOs, and letting agents with a live docket concept and urgent request flow.",
+        specs: ["HMO repair positioning", "Live repair docket preview", "WhatsApp and request actions"],
+      },
+      {
+        title: "Pak Solar Supply",
+        image: "/projects/solar-bay.png",
+        url: "https://solar-bay.vercel.app/",
+        text: "A solar supplier and installation site for Pakistan, built to explain panels, inverters, batteries, and quote packages.",
+        specs: ["Solar product catalogue", "Quote-ready package logic", "Installation and net-metering flow"],
+      },
+    ],
+  },
+  {
+    category: "Weddings, beauty, and lifestyle booking",
+    projects: [
+      {
+        title: "Aurelia Wedding Atelier",
+        image: "/projects/wedding-planner-seven.png",
+        url: "https://wedding-planner-seven-eta.vercel.app/",
+        text: "A luxury wedding planner website with cinematic visuals, service positioning, investment content, and inquiry paths.",
+        specs: ["Luxury planner portfolio", "Inquiry-led navigation", "Service and investment sections"],
+      },
+      {
+        title: "Maison Vow Studio",
+        image: "/projects/wedding-plan-tau.png",
+        url: "https://wedding-plan-tau.vercel.app/",
+        text: "A destination wedding planning site that sells the mood of each location through stories, portfolios, and planning prompts.",
+        specs: ["Destination story catalogue", "Event estimator concept", "Portfolio and inquiry flow"],
+      },
+      {
+        title: "Veloura Salon and Skin Studio",
+        image: "/projects/beautyparlour-eosin.png",
+        url: "https://beautyparlour-eosin.vercel.app/",
+        text: "A salon and skin studio website with service planning, gallery content, booking actions, and an AI concierge panel.",
+        specs: ["AI concierge interface", "Service recommendation prompts", "Booking and visit flow"],
+      },
+      {
+        title: "Luxe Beauty Studio",
+        image: "/projects/beauty-therapist.png",
+        url: "https://beauty-therapist.vercel.app/",
+        text: "A beauty therapist landing page with premium appointment booking, service discovery, and a visual booking panel.",
+        specs: ["Live booking slot preview", "Service-first hero layout", "Gallery and appointment CTAs"],
+      },
+    ],
+  },
+  {
+    category: "Restaurant and hospitality websites",
+    projects: [
+      {
+        title: "Fresh Table",
+        image: "/projects/resturant-six-sigma.png",
+        url: "https://resturant-six-sigma.vercel.app/",
+        text: "A bright restaurant website for cafes and local food businesses, built around menus, reservations, and WhatsApp orders.",
+        specs: ["Menu category system", "Reservation and order CTAs", "Gallery and location sections"],
+      },
+      {
+        title: "Noir and Ember",
+        image: "/projects/resturant-app-seven.png",
+        url: "https://resturant-app-seven-mocha.vercel.app/",
+        text: "A premium restaurant website with a cinematic dining hero, dish highlights, menu browsing, and table booking.",
+        specs: ["Fine dining visual system", "Menu and dish showcase", "Booking and opening-hours blocks"],
+      },
+    ],
+  },
+  {
+    category: "Marketing and business systems",
+    projects: [
+      {
+        title: "Corevix Marketing",
+        image: "/projects/marketing-beta.png",
+        url: "https://marketing-beta-lyart.vercel.app/",
+        text: "A campaign architecture website for turning attention into revenue through strategy, paid ads, creative, and proof.",
+        specs: ["Campaign strategy positioning", "Work and proof sections", "Project-start conversion path"],
+      },
+    ],
+  },
+];
+
 function CorevixLogo() {
   return (
     <span className="logo" aria-hidden="true">
@@ -149,6 +302,62 @@ function GrowthCard({ track }) {
       <h3>{track.title}</h3>
       <p>{track.text}</p>
     </article>
+  );
+}
+
+function ProjectCatalog() {
+  return (
+    <section className="projects section-shell" id="projects">
+      <div className="section-heading section-heading--split">
+        <div>
+          <p className="eyebrow">Project catalog</p>
+          <h2>Live examples across clinics, care, home services, restaurants, beauty, and growth.</h2>
+        </div>
+        <p>
+          Each project below includes a captured hero preview, the business problem it
+          solves, and the key specifications a client can quickly understand.
+        </p>
+      </div>
+
+      <div className="catalog-groups">
+        {projectCatalog.map((group) => {
+          const groupId = `${group.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-title`;
+
+          return (
+            <section className="catalog-group" key={group.category} aria-labelledby={groupId}>
+              <div className="catalog-group__head">
+                <h3 id={groupId}>{group.category}</h3>
+                <span>{String(group.projects.length).padStart(2, "0")} builds</span>
+              </div>
+              <div className="project-grid">
+                {group.projects.map((project) => (
+                  <article className="project-card" key={project.title}>
+                    <a className="project-shot" href={project.url} target="_blank" rel="noreferrer">
+                      <img src={project.image} alt={`${project.title} hero section screenshot`} loading="lazy" />
+                    </a>
+                    <div className="project-card__body">
+                      <div className="project-card__top">
+                        <h4>{project.title}</h4>
+                        <a className="project-link" href={project.url} target="_blank" rel="noreferrer">
+                          Link
+                          <ArrowUpRight size={15} weight="bold" aria-hidden="true" />
+                        </a>
+                      </div>
+                      <p>{project.text}</p>
+                      <ul className="project-specs">
+                        {project.specs.map((spec) => (
+                          <li key={spec}>{spec}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -275,6 +484,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <ProjectCatalog />
 
       <section className="growth section-shell" id="growth">
         <div className="growth__copy">

@@ -17,12 +17,14 @@ import {
   TerminalWindow,
   Wrench,
 } from "@phosphor-icons/react/ssr";
+import BookingSystem from "./BookingSystem";
 
 const navItems = [
   ["Services", "#services"],
   ["Projects", "#projects"],
   ["Growth", "#growth"],
   ["Process", "#process"],
+  ["Book", "#booking"],
   ["Contact", "#contact"],
 ];
 
@@ -451,8 +453,8 @@ export default function Home() {
             decide with more clarity.
           </p>
           <div className="hero__actions">
-            <a className="primary-action" href="#contact">
-              Book a growth audit
+            <a className="primary-action" href="#booking">
+              Book an appointment
               <ArrowRight size={18} weight="bold" aria-hidden="true" />
             </a>
             <a className="secondary-action" href="#services">
@@ -579,6 +581,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <BookingSystem />
 
       <section className="contact section-shell" id="contact">
         <div className="contact__inner">

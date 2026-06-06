@@ -14,6 +14,12 @@ create table if not exists public.contact_messages (
 
 alter table public.contact_messages enable row level security;
 
+create index if not exists contact_messages_created_at_idx
+  on public.contact_messages (created_at desc);
+
+create index if not exists contact_messages_status_idx
+  on public.contact_messages (status);
+
 comment on table public.contact_messages is
   'Website contact form submissions from Corevix Solutions.';
 

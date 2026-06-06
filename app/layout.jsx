@@ -1,4 +1,5 @@
 import Script from "next/script";
+import VisitorTracker from "./VisitorTracker";
 import "./globals.css";
 
 export const metadata = {
@@ -40,6 +41,7 @@ export default function RootLayout({ children }) {
             alt=""
           />
         </noscript>
+        <VisitorTracker />
         {children}
       </body>
     </html>

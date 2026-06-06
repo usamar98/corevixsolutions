@@ -1136,9 +1136,9 @@ main {
 
 .contact__inner {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 24px;
-  align-items: center;
+  grid-template-columns: minmax(0, 0.72fr) minmax(380px, 0.58fr);
+  gap: clamp(22px, 4vw, 46px);
+  align-items: start;
   padding: clamp(26px, 5vw, 54px);
   border: 1px solid rgba(var(--core-rgb), 0.16);
   border-radius: 8px;
@@ -1146,8 +1146,12 @@ main {
   color: var(--surface);
 }
 
-.contact__inner .logo {
-  align-self: start;
+.contact__copy {
+  display: grid;
+  gap: 20px;
+}
+
+.contact__copy .logo {
   color: var(--surface);
   border-color: rgba(var(--surface-rgb), 0.24);
   background: rgba(var(--surface-rgb), 0.08);
@@ -1165,10 +1169,136 @@ main {
 
 .contact-link {
   gap: 10px;
+  width: fit-content;
   padding: 0 18px;
   color: var(--core);
   background: var(--surface);
   white-space: nowrap;
+}
+
+.contact-form {
+  display: grid;
+  gap: 16px;
+  padding: clamp(18px, 3vw, 26px);
+  border: 1px solid rgba(var(--surface-rgb), 0.18);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--core);
+}
+
+.contact-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 8px;
+}
+
+.contact-form label span {
+  color: rgba(var(--core-rgb), 0.66);
+  font-family: "Geist Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 840;
+  text-transform: uppercase;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea,
+.contact-form button {
+  font: inherit;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid rgba(var(--core-rgb), 0.18);
+  border-radius: 8px;
+  background: rgba(var(--surface-rgb), 0.88);
+  color: var(--core);
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.contact-form input,
+.contact-form select {
+  min-height: 48px;
+  padding: 0 13px;
+}
+
+.contact-form textarea {
+  min-height: 136px;
+  resize: vertical;
+  padding: 13px;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  border-color: rgba(var(--core-rgb), 0.62);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(var(--core-rgb), 0.08);
+}
+
+.contact-form__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.contact-form__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid rgba(var(--core-rgb), 0.18);
+  border-radius: 8px;
+  background: rgba(var(--core-rgb), 0.08);
+  color: var(--core);
+  line-height: 1.45;
+}
+
+.contact-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+  border: 1px solid var(--core);
+  border-radius: 8px;
+  background: var(--core);
+  color: var(--surface);
+  cursor: pointer;
+  font-weight: 820;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.contact-form__submit:hover {
+  background: rgba(var(--core-rgb), 0.9);
+}
+
+.contact-form__submit:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.contact-form__submit:active {
+  transform: translateY(1px) scale(0.99);
 }
 
 .site-footer {
@@ -1324,6 +1454,14 @@ main {
 
   .booking-actions .primary-action,
   .booking-actions .secondary-action {
+    width: 100%;
+  }
+
+  .contact-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form__submit {
     width: 100%;
   }
 

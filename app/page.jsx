@@ -18,6 +18,7 @@ import {
   Wrench,
 } from "@phosphor-icons/react/ssr";
 import BookingSystem from "./BookingSystem";
+import ContactForm from "./ContactForm";
 
 const navItems = [
   ["Services", "#services"],
@@ -586,19 +587,20 @@ export default function Home() {
 
       <section className="contact section-shell" id="contact">
         <div className="contact__inner">
-          <CorevixLogo />
-          <div>
+          <div className="contact__copy">
+            <CorevixLogo />
             <p className="eyebrow">Start with a growth audit</p>
             <h2>Tell Corevix what is slowing your website, workflow, AI idea, or dashboard.</h2>
             <p>
               We will turn the problem into a clear build plan and show what should
               be fixed, automated, or measured first.
             </p>
+            <a className="contact-link" href="mailto:hello@corevixsolutions.com">
+              hello@corevixsolutions.com
+              <EnvelopeSimple size={20} weight="bold" aria-hidden="true" />
+            </a>
           </div>
-          <a className="contact-link" href="mailto:hello@corevixsolutions.com">
-            hello@corevixsolutions.com
-            <EnvelopeSimple size={20} weight="bold" aria-hidden="true" />
-          </a>
+          <ContactForm />
         </div>
       </section>
 

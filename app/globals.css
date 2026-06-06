@@ -241,6 +241,11 @@ main {
   background: rgba(var(--core-rgb), 0.9);
 }
 
+.primary-action:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
 .secondary-action {
   padding: 0 18px;
   color: var(--core);
@@ -1515,7 +1520,7 @@ main {
 
 .admin-metrics {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
   margin-top: 24px;
 }
@@ -1585,6 +1590,11 @@ main {
 }
 
 .admin-side {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-main-stack {
   display: grid;
   gap: 16px;
 }

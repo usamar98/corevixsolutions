@@ -55,12 +55,19 @@ const initialForm = {
   goal: "",
 };
 
+function createBookingReference() {
+  const suffix = Math.random().toString(36).slice(2, 4).toUpperCase();
+
+  return `CVX-${Date.now().toString().slice(-6)}${suffix}`;
+}
+
 export default function BookingSystem() {
   const [availableDays, setAvailableDays] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedTime, setSelectedTime] = useState(timeSlots[0]);
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState("");
+  const [submitStatus, setSubmitStatus] = useState("idle");
   const [booking, setBooking] = useState(null);
 
   useEffect(() => {
@@ -101,30 +108,68 @@ export default function BookingSystem() {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
     setError("");
+    setSubmitStatus("idle");
   }
 
-  function submitBooking(event) {
+  async function submitBooking(event) {
     event.preventDefault();
 
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim() || !form.goal.trim()) {
       setError("Add your name, email, phone, and project goal before confirming.");
+      setSubmitStatus("error");
       return;
     }
+
+    setSubmitStatus("submitting");
+    setError("");
 
     const nextBooking = {
       ...form,
       day: selectedDayLabel,
+      selectedDay,
+      selectedDayLabel,
+      selectedTime,
       time: selectedTime,
-      reference: `CVX-${Date.now().toString().slice(-6)}`,
+      reference: createBookingReference(),
     };
 
-    setBooking(nextBooking);
-    setError("");
-
     try {
-      window.localStorage.setItem("corevix-booking-request", JSON.stringify(nextBooking));
-    } catch {
-      // Local storage can be unavailable in strict browser modes. The confirmation still works.
+      const response = await fetch("/api/bookings", {
+        body: JSON.stringify({
+          ...form,
+          reference: nextBooking.reference,
+          selectedDay,
+          selectedDayLabel,
+          selectedTime,
+          source: "corevix_booking_form",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.error || "Could not save appointment request.");
+      }
+
+      const savedBooking = {
+        ...nextBooking,
+        reference: result.reference || nextBooking.reference,
+      };
+
+      setBooking(savedBooking);
+      setSubmitStatus("success");
+
+      try {
+        window.localStorage.setItem("corevix-booking-request", JSON.stringify(savedBooking));
+      } catch {
+        // Local storage can be unavailable in strict browser modes. The dashboard request is already saved.
+      }
+    } catch (bookingError) {
+      setSubmitStatus("error");
+      setError(bookingError.message || "Could not save the appointment right now. Please use the email request button.");
     }
   }
 
@@ -134,6 +179,7 @@ export default function BookingSystem() {
     setSelectedTime(timeSlots[0]);
     setSelectedDay(availableDays[0]?.value || "");
     setError("");
+    setSubmitStatus("idle");
   }
 
   return (
@@ -145,7 +191,7 @@ export default function BookingSystem() {
         </div>
         <p>
           Pick the service, choose a slot, and share what you want to build or fix.
-          The request is prepared for direct email so the next step is simple.
+          Your request goes straight into the Corevix admin dashboard for follow-up.
         </p>
       </div>
 
@@ -188,7 +234,11 @@ export default function BookingSystem() {
                     className={selectedDay === day.value ? "is-active" : ""}
                     key={day.value}
                     type="button"
-                    onClick={() => setSelectedDay(day.value)}
+                    onClick={() => {
+                      setSelectedDay(day.value);
+                      setError("");
+                      setSubmitStatus("idle");
+                    }}
                   >
                     <CalendarBlank size={17} weight="duotone" aria-hidden="true" />
                     {day.label}
@@ -208,7 +258,11 @@ export default function BookingSystem() {
                   className={selectedTime === slot ? "is-active" : ""}
                   key={slot}
                   type="button"
-                  onClick={() => setSelectedTime(slot)}
+                  onClick={() => {
+                    setSelectedTime(slot);
+                    setError("");
+                    setSubmitStatus("idle");
+                  }}
                 >
                   <Clock size={17} weight="duotone" aria-hidden="true" />
                   {slot}
@@ -235,8 +289,8 @@ export default function BookingSystem() {
           ) : null}
 
           <div className="booking-actions">
-            <button className="primary-action" type="submit">
-              Confirm appointment
+            <button className="primary-action" disabled={submitStatus === "submitting"} type="submit">
+              {submitStatus === "submitting" ? "Saving appointment" : "Confirm appointment"}
               <CheckCircle size={18} weight="bold" aria-hidden="true" />
             </button>
             <a className="secondary-action" href={mailtoHref}>
@@ -274,10 +328,10 @@ export default function BookingSystem() {
             <div className="booking-confirmed">
               <CheckCircle size={24} weight="fill" aria-hidden="true" />
               <div>
-                <strong>Booking request created</strong>
+                <strong>Booking request received</strong>
                 <p>
-                  Reference {booking.reference}. Send the prepared email so Corevix
-                  can confirm the exact appointment.
+                  Reference {booking.reference}. Corevix can now see this request
+                  inside the admin dashboard and confirm the exact appointment.
                 </p>
               </div>
               <a className="primary-action" href={mailtoHref}>

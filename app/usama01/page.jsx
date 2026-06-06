@@ -1,4 +1,5 @@
 import {
+  CalendarCheck,
   ChartLineUp,
   Clock,
   Database,
@@ -68,6 +69,13 @@ function uniqueVisitorCount(visitors) {
   return new Set(visitors.map((visitor) => visitor.visitor_id).filter(Boolean)).size;
 }
 
+function formatAppointmentSlot(booking) {
+  const day = booking.preferred_day_label || booking.preferred_date || "No preferred day";
+  const time = booking.preferred_time || "No preferred time";
+
+  return `${day}, ${time}`;
+}
+
 function SetupPanel({ missing }) {
   return (
     <main className="admin-page admin-page--center">
@@ -113,8 +121,24 @@ export default async function AdminDashboard() {
   }
 
   const todayIso = startOfTodayIso();
-  const [messagesResult, visitorsResult, todayVisitorsResult, totalMessages, totalViews, newMessages] =
+  const [
+    bookingsResult,
+    messagesResult,
+    visitorsResult,
+    todayVisitorsResult,
+    totalBookings,
+    newBookings,
+    totalMessages,
+    totalViews,
+    newMessages,
+  ] =
     await Promise.all([
+      supabaseRequest(config.bookingTable, {
+        limit: 30,
+        order: "created_at.desc",
+        select:
+          "id,created_at,reference,name,email,phone,company,service,preferred_date,preferred_day_label,preferred_time,goal,status",
+      }),
       supabaseRequest(config.contactTable, {
         limit: 40,
         order: "created_at.desc",
@@ -132,11 +156,14 @@ export default async function AdminDashboard() {
         order: "created_at.desc",
         select: "id,created_at,visitor_id,path",
       }),
+      countSupabaseRows(config.bookingTable),
+      countSupabaseRows(config.bookingTable, { status: "eq.new" }),
       countSupabaseRows(config.contactTable),
       countSupabaseRows(config.visitorTable),
       countSupabaseRows(config.contactTable, { status: "eq.new" }),
     ]);
 
+  const bookings = bookingsResult.data || [];
   const messages = messagesResult.data || [];
   const visitors = visitorsResult.data || [];
   const todayVisitors = todayVisitorsResult.data || [];
@@ -147,8 +174,8 @@ export default async function AdminDashboard() {
       <header className="admin-header">
         <div>
           <p className="admin-kicker">Corevix command desk</p>
-          <h1>Visitors and contact messages</h1>
-          <p>Live website activity from Supabase tables: contact messages and visitor events.</p>
+          <h1>Appointments, visitors, and contact messages</h1>
+          <p>Live website activity from Supabase tables: appointment bookings, contact messages, and visitor events.</p>
         </div>
         <div className="admin-header__actions">
           <a href="/usama01">Refresh data</a>
@@ -157,6 +184,7 @@ export default async function AdminDashboard() {
       </header>
 
       <section className="admin-metrics" aria-label="Admin dashboard metrics">
+        <MetricCard icon={CalendarCheck} label="Appointments" value={totalBookings} note={`${newBookings} new`} />
         <MetricCard icon={Eye} label="Page views" value={totalViews} note={`${todayVisitors.length} today`} />
         <MetricCard
           icon={UsersThree}
@@ -168,61 +196,114 @@ export default async function AdminDashboard() {
         <MetricCard icon={Clock} label="Latest visit" value={visitors[0] ? formatDate(visitors[0].created_at) : "None"} note="Most recent event" />
       </section>
 
-      {(messagesResult.error || visitorsResult.error) && (
+      {(bookingsResult.error || messagesResult.error || visitorsResult.error) && (
         <section className="admin-warning">
           <strong>Supabase data warning</strong>
           <p>
             If tables are missing, run the SQL files in the Supabase SQL editor:
-            <code>contact_messages.sql</code> and <code>visitor_events.sql</code>.
+            <code>appointment_bookings.sql</code>, <code>contact_messages.sql</code>, and <code>visitor_events.sql</code>.
           </p>
         </section>
       )}
 
       <section className="admin-grid">
-        <div className="admin-panel admin-panel--messages">
-          <div className="admin-panel__head">
-            <div>
-              <p className="admin-kicker">Contact inbox</p>
-              <h2>Recent messages</h2>
+        <div className="admin-main-stack">
+          <div className="admin-panel admin-panel--bookings">
+            <div className="admin-panel__head">
+              <div>
+                <p className="admin-kicker">Appointment desk</p>
+                <h2>Recent appointments</h2>
+              </div>
+              <span>{bookings.length} shown</span>
             </div>
-            <span>{messages.length} shown</span>
+            <div className="admin-message-list">
+              {bookings.length ? (
+                bookings.map((booking) => (
+                  <article className="admin-message admin-booking" key={booking.id}>
+                    <div>
+                      <span>{formatDate(booking.created_at)}</span>
+                      <h3>{booking.name || "Unknown client"}</h3>
+                      <p>{booking.goal || "No project goal provided."}</p>
+                    </div>
+                    <dl>
+                      <div>
+                        <dt>Reference</dt>
+                        <dd>{booking.reference || "Not provided"}</dd>
+                      </div>
+                      <div>
+                        <dt>Slot</dt>
+                        <dd>{formatAppointmentSlot(booking)}</dd>
+                      </div>
+                      <div>
+                        <dt>Service</dt>
+                        <dd>{booking.service || "Not provided"}</dd>
+                      </div>
+                      <div>
+                        <dt>Email</dt>
+                        <dd>{booking.email || "Not provided"}</dd>
+                      </div>
+                      <div>
+                        <dt>Phone</dt>
+                        <dd>{booking.phone || "Not provided"}</dd>
+                      </div>
+                      <div>
+                        <dt>Status</dt>
+                        <dd>{booking.status || "new"}</dd>
+                      </div>
+                    </dl>
+                  </article>
+                ))
+              ) : (
+                <p className="admin-empty">No appointment requests yet.</p>
+              )}
+            </div>
           </div>
-          <div className="admin-message-list">
-            {messages.length ? (
-              messages.map((message) => (
-                <article className="admin-message" key={message.id}>
-                  <div>
-                    <span>{formatDate(message.created_at)}</span>
-                    <h3>{message.name || "Unknown contact"}</h3>
-                    <p>{message.message || "No message body provided."}</p>
-                  </div>
-                  <dl>
+
+          <div className="admin-panel admin-panel--messages">
+            <div className="admin-panel__head">
+              <div>
+                <p className="admin-kicker">Contact inbox</p>
+                <h2>Recent messages</h2>
+              </div>
+              <span>{messages.length} shown</span>
+            </div>
+            <div className="admin-message-list">
+              {messages.length ? (
+                messages.map((message) => (
+                  <article className="admin-message" key={message.id}>
                     <div>
-                      <dt>Email</dt>
-                      <dd>{message.email || "Not provided"}</dd>
+                      <span>{formatDate(message.created_at)}</span>
+                      <h3>{message.name || "Unknown contact"}</h3>
+                      <p>{message.message || "No message body provided."}</p>
                     </div>
-                    <div>
-                      <dt>Phone</dt>
-                      <dd>{message.phone || "Not provided"}</dd>
-                    </div>
-                    <div>
-                      <dt>Service</dt>
-                      <dd>{message.service}</dd>
-                    </div>
-                    <div>
-                      <dt>Company</dt>
-                      <dd>{message.company || "Not provided"}</dd>
-                    </div>
-                    <div>
-                      <dt>Status</dt>
-                      <dd>{message.status || "new"}</dd>
-                    </div>
-                  </dl>
-                </article>
-              ))
-            ) : (
-              <p className="admin-empty">No contact messages yet.</p>
-            )}
+                    <dl>
+                      <div>
+                        <dt>Email</dt>
+                        <dd>{message.email || "Not provided"}</dd>
+                      </div>
+                      <div>
+                        <dt>Phone</dt>
+                        <dd>{message.phone || "Not provided"}</dd>
+                      </div>
+                      <div>
+                        <dt>Service</dt>
+                        <dd>{message.service}</dd>
+                      </div>
+                      <div>
+                        <dt>Company</dt>
+                        <dd>{message.company || "Not provided"}</dd>
+                      </div>
+                      <div>
+                        <dt>Status</dt>
+                        <dd>{message.status || "new"}</dd>
+                      </div>
+                    </dl>
+                  </article>
+                ))
+              ) : (
+                <p className="admin-empty">No contact messages yet.</p>
+              )}
+            </div>
           </div>
         </div>
 

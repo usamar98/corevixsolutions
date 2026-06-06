@@ -11,6 +11,7 @@ export function getSupabaseConfig() {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   return {
+    bookingTable: process.env.SUPABASE_BOOKING_TABLE || "appointment_bookings",
     contactTable: process.env.SUPABASE_CONTACT_TABLE || "contact_messages",
     isConfigured: Boolean(url && serviceRoleKey),
     serviceRoleKey,

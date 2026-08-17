@@ -17,6 +17,7 @@ import {
   TerminalWindow,
   Wrench,
 } from "@phosphor-icons/react/ssr";
+import Image from "next/image";
 import BookingSystem from "./BookingSystem";
 import ContactForm from "./ContactForm";
 
@@ -98,6 +99,33 @@ const process = [
 ];
 
 const projectCatalog = [
+  {
+    category: "SaaS products",
+    projects: [
+      {
+        title: "Editing App",
+        image: "/projects/editing-app.png",
+        url: "https://www.editingapp.live/",
+        text: "A private, multi-model creative workspace for clipping long videos, generating video and images, building performance ads, and removing backgrounds.",
+        specs: [
+          "AI clipper with editable captions",
+          "Multi-model video and image generation",
+          "Product URL and long-video ad workflows",
+        ],
+      },
+      {
+        title: "Hirevate",
+        image: "/projects/hirevate.png",
+        url: "https://www.hirevate.com/",
+        text: "A career workflow SaaS for finding fresh roles, creating job-tailored resumes and cover letters, and managing every application from interest to decision.",
+        specs: [
+          "Fresh and verified job discovery",
+          "Job-tailored resume and cover letter tools",
+          "Application pipeline and follow-up tracking",
+        ],
+      },
+    ],
+  },
   {
     category: "Healthcare and dental websites",
     projects: [
@@ -252,7 +280,7 @@ const projectCatalog = [
 function CorevixLogo() {
   return (
     <span className="logo" aria-hidden="true">
-      <img src="/corevix-logo.png" alt="" />
+      <Image src="/corevix-logo.png" alt="" width={54} height={54} />
     </span>
   );
 }
@@ -314,7 +342,7 @@ function ProjectCatalog() {
       <div className="section-heading section-heading--split">
         <div>
           <p className="eyebrow">Project catalog</p>
-          <h2>Live examples across clinics, care, home services, restaurants, beauty, and growth.</h2>
+          <h2>Live products and websites across SaaS, clinics, care, home services, hospitality, beauty, and growth.</h2>
         </div>
         <p>
           Each project below includes a captured hero preview, the business problem it
@@ -336,7 +364,12 @@ function ProjectCatalog() {
                 {group.projects.map((project) => (
                   <article className="project-card" key={project.title}>
                     <a className="project-shot" href={project.url} target="_blank" rel="noreferrer">
-                      <img src={project.image} alt={`${project.title} hero section screenshot`} loading="lazy" />
+                      <Image
+                        src={project.image}
+                        alt={`${project.title} hero section screenshot`}
+                        fill
+                        sizes="(max-width: 760px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
                     </a>
                     <div className="project-card__body">
                       <div className="project-card__top">

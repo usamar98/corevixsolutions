@@ -588,6 +588,7 @@ main {
 }
 
 .project-shot {
+  position: relative;
   display: block;
   aspect-ratio: 16 / 9;
   overflow: hidden;

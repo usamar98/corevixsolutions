@@ -20,15 +20,7 @@ import {
 import Image from "next/image";
 import BookingSystem from "./BookingSystem";
 import ContactForm from "./ContactForm";
-
-const navItems = [
-  ["Services", "#services"],
-  ["Projects", "#projects"],
-  ["Growth", "#growth"],
-  ["Process", "#process"],
-  ["Book", "#booking"],
-  ["Contact", "#contact"],
-];
+import SiteHeader from "./SiteHeader";
 
 const services = [
   {
@@ -285,27 +277,6 @@ function CorevixLogo() {
   );
 }
 
-function Header() {
-  return (
-    <header className="site-header">
-      <a className="brand" href="#top" aria-label="Corevix Solutions home">
-        <CorevixLogo />
-        <span>
-          <strong>Corevix</strong>
-          <small>Solutions</small>
-        </span>
-      </a>
-      <nav aria-label="Primary navigation">
-        {navItems.map(([label, href]) => (
-          <a key={label} href={href}>
-            {label}
-          </a>
-        ))}
-      </nav>
-    </header>
-  );
-}
-
 function ServiceCard({ service, index }) {
   const Icon = service.icon;
 
@@ -475,7 +446,7 @@ function DashboardPanel() {
 export default function Home() {
   return (
     <main id="top">
-      <Header />
+      <SiteHeader />
 
       <section className="hero section-shell">
         <div className="hero__copy">

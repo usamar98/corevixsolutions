@@ -12,10 +12,12 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 body {
   margin: 0;
+  min-width: 320px;
   background: var(--surface);
   color: var(--core);
   font-family:
@@ -43,6 +45,22 @@ a {
   text-decoration: none;
 }
 
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(var(--core-rgb), 0.28);
+  outline-offset: 3px;
+}
+
 main {
   overflow: hidden;
 }
@@ -55,7 +73,7 @@ main {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -64,6 +82,10 @@ main {
   margin-inline: auto;
   padding-block: 14px;
   backdrop-filter: blur(18px);
+}
+
+.mobile-nav-toggle {
+  display: none;
 }
 
 .brand,
@@ -1819,44 +1841,106 @@ main {
   }
 
   .site-header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-    min-height: auto;
+    align-items: center;
+    min-height: 68px;
+    padding-block: 8px;
+    background: rgba(var(--surface-rgb), 0.94);
   }
 
   .site-header nav {
-    width: 100%;
-    overflow-x: auto;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
+    display: grid;
+    width: auto;
+    max-height: calc(100dvh - 88px);
+    padding: 8px;
+    overflow-y: auto;
+    background: var(--surface);
+    box-shadow: 0 20px 50px rgba(var(--core-rgb), 0.16);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition:
+      opacity 180ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 180ms;
+  }
+
+  .site-header.is-open nav {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .site-header nav a {
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+    padding-inline: 14px;
+  }
+
+  .mobile-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid rgba(var(--core-rgb), 0.18);
+    border-radius: 8px;
+    background: rgba(var(--surface-rgb), 0.9);
+    color: var(--core);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 820;
+  }
+
+  .site-header .logo {
+    width: 46px;
+    height: 46px;
+  }
+
+  .site-header .brand {
+    gap: 10px;
   }
 
   .hero {
-    padding-top: 34px;
+    gap: 36px;
+    padding-top: 36px;
+    padding-bottom: 58px;
   }
 
   .hero h1 {
     font-size: clamp(2.2rem, 10.5vw, 3.2rem);
   }
 
-  .proof-strip,
-  .service-grid,
-  .dashboard-panel__rows div,
-  .process-list article,
-  .system-footer {
+  .proof-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .service-grid {
     grid-template-columns: 1fr;
   }
 
   .agency-system {
-    min-height: 620px;
+    min-height: auto;
+    padding: 76px 12px 66px;
   }
 
   .system-grid {
-    inset: 78px 14px 174px;
+    position: relative;
+    inset: auto;
+    display: grid;
+    gap: 10px;
   }
 
   .system-node {
     position: relative;
     width: 100%;
+    padding: 16px;
   }
 
   .node-site,
@@ -1866,15 +1950,105 @@ main {
   }
 
   .system-core {
-    top: auto;
-    bottom: -148px;
-    width: 132px;
-    height: 132px;
+    position: relative;
+    inset: auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    padding: 14px;
+    transform: none;
   }
 
-  .system-grid {
-    display: grid;
-    gap: 10px;
+  .system-core .logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .system-footer {
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+  }
+
+  .system-footer span {
+    padding: 10px 2px;
+    font-size: 0.64rem;
+  }
+
+  .services,
+  .projects,
+  .growth,
+  .fix-build,
+  .systems,
+  .process,
+  .booking,
+  .contact {
+    padding: 56px 0;
+  }
+
+  .section-heading {
+    margin-bottom: 26px;
+  }
+
+  .section-heading h2,
+  .growth h2,
+  .fix-build h2,
+  .systems h2,
+  .contact h2 {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+    line-height: 1.06;
+  }
+
+  .hero__copy > p:not(.eyebrow),
+  .growth__copy p,
+  .fix-build__panel p,
+  .systems__content p,
+  .contact p,
+  .section-heading--split > p,
+  .service-card p,
+  .growth-card p,
+  .process-list p {
+    line-height: 1.62;
+  }
+
+  .service-card {
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .service-card__icon {
+    margin-bottom: 28px;
+  }
+
+  .project-card__body,
+  .growth-card,
+  .dashboard-panel,
+  .booking-summary {
+    padding: 18px;
+  }
+
+  .dashboard-panel__chart {
+    height: 190px;
+  }
+
+  .dashboard-panel__rows div {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .dashboard-panel__rows em {
+    grid-column: 1 / -1;
+  }
+
+  .process-list article {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 8px 14px;
+    padding: 22px 0;
+  }
+
+  .process-list article p {
+    grid-column: 2;
+    margin-top: 0;
   }
 
   .contact-link {
@@ -1882,10 +2056,22 @@ main {
     white-space: normal;
   }
 
-  .booking-form__grid,
+  .booking-form__grid {
+    grid-template-columns: 1fr;
+  }
+
   .booking-days,
   .booking-times {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .booking input,
+  .booking select,
+  .booking textarea,
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    font-size: 1rem;
   }
 
   .booking-actions .primary-action,
@@ -1903,14 +2089,35 @@ main {
 
   .catalog-group__head,
   .project-card__top,
-  .admin-grid,
-  .admin-metrics {
+  .admin-grid {
     align-items: start;
     grid-template-columns: 1fr;
   }
 
   .admin-page {
     width: min(100% - 28px, 1320px);
+  }
+
+  .admin-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .admin-metric {
+    padding: 15px;
+  }
+
+  .admin-metric:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .admin-panel__head {
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .admin-message {
+    padding: 16px;
   }
 
   .admin-header__actions,
@@ -1930,6 +2137,61 @@ main {
   .site-footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 420px) {
+  .section-shell,
+  .site-header,
+  .admin-page {
+    width: min(100% - 22px, 1320px);
+  }
+
+  .site-header .brand small {
+    display: none;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.05rem, 10vw, 2.55rem);
+  }
+
+  .hero__actions .primary-action,
+  .hero__actions .secondary-action {
+    width: 100%;
+  }
+
+  .proof-strip div {
+    padding: 16px 14px;
+  }
+
+  .proof-strip strong {
+    font-size: 1.35rem;
+  }
+
+  .proof-strip span {
+    font-size: 0.86rem;
+    line-height: 1.35;
+  }
+
+  .fix-build__panel,
+  .contact__inner,
+  .booking-form {
+    padding: 18px;
+  }
+
+  .booking-days,
+  .booking-times {
+    gap: 8px;
+  }
+
+  .booking-days button,
+  .booking-times button {
+    padding-inline: 8px;
+    font-size: 0.9rem;
+  }
+
+  .admin-header h1 {
+    font-size: 2rem;
   }
 }
 
